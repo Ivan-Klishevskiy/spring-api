@@ -14,7 +14,7 @@ public class SwaggerConfiguration {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("by.tms.springapi.controller"))
+                .apis(RequestHandlerSelectors.basePackage("by.tms.sprongapi"))
                 .paths(PathSelectors.any())
                 .build();
     }

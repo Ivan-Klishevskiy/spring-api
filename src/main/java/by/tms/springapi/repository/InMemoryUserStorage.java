@@ -31,9 +31,9 @@ public class InMemoryUserStorage {
         return null;
     }
 
-    public User updateUser(User user) {
+    public User updateUser(String username,User user) {
         for (User temp : userList) {
-            if (Objects.equals(temp.getUsername(), user.getUsername())) {
+            if (Objects.equals(temp.getUsername(), username)) {
                 temp = user;
                 break;
             }

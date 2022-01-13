@@ -35,17 +35,17 @@ public class UserService {
             }
     }
 
-    public User updateUser(User user) throws UserNotExistException {
-        if (userStorage.findByUsername(user.getUsername()) != null) {
+    public User updateUser(String username, User user) throws UserNotExistException {
+        if (userStorage.findByUsername(username) != null) {
             throw new UserNotExistException("User not found!");
         } else {
-            return userStorage.updateUser(user);
+            return userStorage.updateUser(username,user);
         }
     }
 
     public void deleteUser(String username) throws UserNotExistException {
-        if (userStorage.findByUsername(username) != null) {
-            throw new UserNotExistException("User already exist!");
+        if (userStorage.findByUsername(username) == null) {
+            throw new UserNotExistException("User not found!");
         } else {
             userStorage.deleteUser(username);
         }
