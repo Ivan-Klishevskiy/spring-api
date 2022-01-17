@@ -1,8 +1,8 @@
 package by.tms.springapi.controller;
 
 import by.tms.springapi.entity.User;
-import by.tms.springapi.exception.UserAlreadyExistException;
-import by.tms.springapi.exception.UserNotExistException;
+import by.tms.springapi.exception.userException.UserAlreadyExistException;
+import by.tms.springapi.exception.userException.UserNotExistException;
 import by.tms.springapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,21 +18,17 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/createWithList")
-    public ResponseEntity createWithList(@RequestBody List<User> users) {
+    public ResponseEntity<?> createWithList(@RequestBody List<User> users) {
         try {
-            for (User user : users) {
-                userService.saveUser(user);
-            }
+            userService.saveAllUsers(users);
             return ResponseEntity.ok("successful operation");
-        } catch (UserAlreadyExistException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error!");
         }
     }
 
     @PostMapping("/create")
-    public ResponseEntity create(@RequestBody User user) {
+    public ResponseEntity<?> create(@RequestBody User user) {
         try {
             userService.saveUser(user);
             return ResponseEntity.ok("successful operation");
@@ -44,7 +40,7 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity getUser(@PathVariable("username")String username){
+    public ResponseEntity<?> getUser(@PathVariable("username") String username) {
         try {
             return ResponseEntity.ok(userService.findByUsername(username));
         } catch (UserNotExistException e) {
@@ -54,16 +50,16 @@ public class UserController {
     }
 
     @PutMapping("/{username}")
-    public ResponseEntity update(@PathVariable("username")String username, @RequestBody User user){
+    public ResponseEntity<?> update(@PathVariable("username") String username, @RequestBody User user) {
         try {
-            return ResponseEntity.ok(userService.updateUser(username,user));
+            return ResponseEntity.ok(userService.updateUser(user));
         } catch (UserNotExistException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @DeleteMapping("/{username}")
-    public ResponseEntity delete(@PathVariable("username")String username){
+    public ResponseEntity<?> delete(@PathVariable("username") String username) {
         try {
             userService.deleteUser(username);
             return ResponseEntity.ok("successful delete");
@@ -71,4 +67,5 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 }
